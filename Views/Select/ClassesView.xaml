@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="Tema_3_MVP.Views.ClassesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tema_3_MVP.Views"
+             xmlns:viewmodels="clr-namespace:Tema_3_MVP.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:ClassesViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <Button Content="Back" Margin="5" Width="75" Click="Button_Click"/>
+            <Button Content="Create" Margin="5" Width="75" Click="Create_Click"/>
+            <Button Content="Edit" Margin="5" Width="75" Click="Edit_Click"/>
+            <Button Content="Delete" Margin="5" Width="75" Click="Delete_Click"/>
+        </StackPanel>
+        <ListView ItemsSource="{Binding Classes}" Margin="5px" BorderBrush="Gray" Grid.Column="0" Grid.Row="1" SelectedIndex="{Binding Index}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id"
+                                    DisplayMemberBinding="{Binding class_id}" Width="25"/>
+                    <GridViewColumn Header="Head Teacher" 
+                                    DisplayMemberBinding="{Binding head_teacher_id}" Width="200"/>
+                    <GridViewColumn Header="Year" 
+                                    DisplayMemberBinding="{Binding year}" Width="125"/>
+                    <GridViewColumn Header="Division"
+                                    DisplayMemberBinding="{Binding division}" Width="75"/>
+                    <GridViewColumn Header="Specialization"
+                                    DisplayMemberBinding="{Binding specialization}" Width="200"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b34a1122620740029fe079cff064cde7" Name="Diagram1">
+        <EntityTypeShape EntityType="SchoolModel.Account" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Class" Width="1.5" PointX="7.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Resource" Width="1.5" PointX="12" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Role" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Student" Width="1.5" PointX="9.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Subject" Width="1.5" PointX="9.75" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Teacher" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Absence" Width="1.5" PointX="12" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SchoolModel.Grade" Width="1.5" PointX="15" PointY="8.25" IsExpanded="true" />
+        <AssociationConnector Association="SchoolModel.FK_Account_Role" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Student_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Teacher_Account" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Class_Head_Teacher" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Student_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Subject_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Resources_Subject" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Absence_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Grade_Student" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Absence_Subject" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Grade_Subject" ManuallyRouted="false" />
+        <AssociationConnector Association="SchoolModel.FK_Subject_Teacher" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

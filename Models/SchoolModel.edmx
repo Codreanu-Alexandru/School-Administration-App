@@ -1,0 +1,1188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="SchoolModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'School.dbo.Absence' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Absence">
+          <Key>
+            <PropertyRef Name="subject_id" />
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="date" />
+            <PropertyRef Name="excused" />
+          </Key>
+          <Property Name="subject_id" Type="bigint" Nullable="false" />
+          <Property Name="student_id" Type="bigint" Nullable="false" />
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="excused" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="account_id" />
+          </Key>
+          <Property Name="account_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="account_password" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="role_id" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="class_id" />
+          </Key>
+          <Property Name="class_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="head_teacher_id" Type="bigint" Nullable="false" />
+          <Property Name="year" Type="smallint" Nullable="false" />
+          <Property Name="division" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="specialization" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'School.dbo.Grade' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="subject_id" />
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="score" />
+            <PropertyRef Name="midterm" />
+          </Key>
+          <Property Name="subject_id" Type="bigint" Nullable="false" />
+          <Property Name="student_id" Type="bigint" Nullable="false" />
+          <Property Name="score" Type="smallint" Nullable="false" />
+          <Property Name="midterm" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Resources">
+          <Key>
+            <PropertyRef Name="resource_id" />
+          </Key>
+          <Property Name="resource_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subject_id" Type="bigint" Nullable="false" />
+          <Property Name="resource_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="role_title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account_id" Type="bigint" Nullable="false" />
+          <Property Name="class_id" Type="bigint" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="subject_id" />
+          </Key>
+          <Property Name="subject_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="class_id" Type="bigint" Nullable="false" />
+          <Property Name="teacher_id" Type="bigint" Nullable="false" />
+          <Property Name="subject_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="has_midterm" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="teacher_id" />
+          </Key>
+          <Property Name="teacher_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="account_id" Type="bigint" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Absence_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Absence" Type="Self.Absence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="Absence">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Absence_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Absence" Type="Self.Absence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="subject_id" />
+            </Principal>
+            <Dependent Role="Absence">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Account_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_Head_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="teacher_id" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="head_teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Grade" Type="Self.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Grade" Type="Self.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="subject_id" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resources_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Resources" Type="Self.Resources" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="subject_id" />
+            </Principal>
+            <Dependent Role="Resources">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="class_id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="class_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="class_id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="class_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="teacher_id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teacher_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="CreateAbsence" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+          <Parameter Name="excused" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="CreateClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="head_teacher_id" Type="int" Mode="In" />
+          <Parameter Name="year" Type="int" Mode="In" />
+          <Parameter Name="division" Type="nvarchar" Mode="In" />
+          <Parameter Name="specialization" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="CreateGrade" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="score" Type="decimal" Mode="In" />
+          <Parameter Name="midterm" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="CreateStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="account_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="account_password" Type="nvarchar" Mode="In" />
+          <Parameter Name="first_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="last_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="class_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="CreateSubject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="class_id" Type="int" Mode="In" />
+          <Parameter Name="teacher_id" Type="int" Mode="In" />
+          <Parameter Name="subject_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="has_midterm" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="CreateTeacher" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="account_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="account_password" Type="nvarchar" Mode="In" />
+          <Parameter Name="first_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="last_name" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="DeleteAbsence" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+        </Function>
+        <Function Name="DeleteClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="class_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteGrade" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="midterm" Type="bit" Mode="In" />
+          <Parameter Name="score" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="DeleteStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="student_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteSubject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteTeacher" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="teacher_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllAbsences" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllClasses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllGrades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllStudentAbsences" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="student_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllStudentGrades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="student_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllStudents" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllSubjectGrades" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetAllSubjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllTeachers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetAllTeacherSubjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="teacher_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateAbsence" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
+          <Parameter Name="excused" Type="bit" Mode="In" />
+          <Parameter Name="old_date" Type="date" Mode="In" />
+        </Function>
+        <Function Name="UpdateClass" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="class_id" Type="int" Mode="In" />
+          <Parameter Name="head_teacher_id" Type="int" Mode="In" />
+          <Parameter Name="year" Type="int" Mode="In" />
+          <Parameter Name="division" Type="nvarchar" Mode="In" />
+          <Parameter Name="specialization" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateGrade" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="score" Type="decimal" Mode="In" />
+          <Parameter Name="midterm" Type="bit" Mode="In" />
+          <Parameter Name="old_score" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="UpdateStudent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="student_id" Type="int" Mode="In" />
+          <Parameter Name="account_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="account_password" Type="nvarchar" Mode="In" />
+          <Parameter Name="role_id" Type="int" Mode="In" />
+          <Parameter Name="first_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="last_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="class_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateSubject" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="subject_id" Type="int" Mode="In" />
+          <Parameter Name="class_id" Type="int" Mode="In" />
+          <Parameter Name="teacher_id" Type="int" Mode="In" />
+          <Parameter Name="subject_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="has_midterm" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="UpdateTeacher" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="teacher_id" Type="int" Mode="In" />
+          <Parameter Name="account_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="account_password" Type="nvarchar" Mode="In" />
+          <Parameter Name="role_id" Type="int" Mode="In" />
+          <Parameter Name="first_name" Type="nvarchar" Mode="In" />
+          <Parameter Name="last_name" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="SchoolModelStoreContainer">
+          <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Resources" EntityType="Self.Resources" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Student" EntityType="Self.Student" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subject" EntityType="Self.Subject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Teacher" EntityType="Self.Teacher" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Absence" EntityType="Self.Absence" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Absence].[subject_id] AS [subject_id], 
+    [Absence].[student_id] AS [student_id], 
+    [Absence].[date] AS [date], 
+    [Absence].[excused] AS [excused]
+    FROM [dbo].[Absence] AS [Absence]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Grade" EntityType="Self.Grade" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Grade].[subject_id] AS [subject_id], 
+    [Grade].[student_id] AS [student_id], 
+    [Grade].[score] AS [score], 
+    [Grade].[midterm] AS [midterm]
+    FROM [dbo].[Grade] AS [Grade]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Absence_Student" Association="Self.FK_Absence_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Absence" EntitySet="Absence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Absence_Subject" Association="Self.FK_Absence_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Absence" EntitySet="Absence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Account_Role" Association="Self.FK_Account_Role">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="Account" EntitySet="Account" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_Head_Teacher" Association="Self.FK_Class_Head_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Class" EntitySet="Class" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Student" Association="Self.FK_Grade_Student">
+            <End Role="Student" EntitySet="Student" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Subject" Association="Self.FK_Grade_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Grade" EntitySet="Grade" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resources_Subject" Association="Self.FK_Resources_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Resources" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Account" Association="Self.FK_Student_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Class" Association="Self.FK_Subject_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Teacher" Association="Self.FK_Subject_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="Subject" EntitySet="Subject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teacher_Account" Association="Self.FK_Teacher_Account">
+            <End Role="Account" EntitySet="Account" />
+            <End Role="Teacher" EntitySet="Teacher" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SchoolModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="account_id" />
+          </Key>
+          <Property Name="account_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="account_password" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="role_id" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="Self.FK_Account_Role" FromRole="Account" ToRole="Role" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_Account" FromRole="Account" ToRole="Student" />
+          <NavigationProperty Name="Teachers" Relationship="Self.FK_Teacher_Account" FromRole="Account" ToRole="Teacher" />
+        </EntityType>
+        <EntityType Name="Class">
+          <Key>
+            <PropertyRef Name="class_id" />
+          </Key>
+          <Property Name="class_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="head_teacher_id" Type="Int64" Nullable="false" />
+          <Property Name="year" Type="Int16" Nullable="false" />
+          <Property Name="division" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="specialization" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK_Class_Head_Teacher" FromRole="Class" ToRole="Teacher" />
+          <NavigationProperty Name="Students" Relationship="Self.FK_Student_Class" FromRole="Class" ToRole="Student" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK_Subject_Class" FromRole="Class" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Resource">
+          <Key>
+            <PropertyRef Name="resource_id" />
+          </Key>
+          <Property Name="resource_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="subject_id" Type="Int64" Nullable="false" />
+          <Property Name="resource_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_Resources_Subject" FromRole="Resources" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="role_id" />
+          </Key>
+          <Property Name="role_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="role_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Accounts" Relationship="Self.FK_Account_Role" FromRole="Role" ToRole="Account" />
+        </EntityType>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="student_id" />
+          </Key>
+          <Property Name="student_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_id" Type="Int64" Nullable="false" />
+          <Property Name="class_id" Type="Int64" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Student_Account" FromRole="Student" ToRole="Account" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Student_Class" FromRole="Student" ToRole="Class" />
+          <NavigationProperty Name="Absences" Relationship="Self.FK_Absence_Student" FromRole="Student" ToRole="Absence" />
+          <NavigationProperty Name="Grades" Relationship="Self.FK_Grade_Student" FromRole="Student" ToRole="Grade" />
+        </EntityType>
+        <EntityType Name="Subject">
+          <Key>
+            <PropertyRef Name="subject_id" />
+          </Key>
+          <Property Name="subject_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="class_id" Type="Int64" Nullable="false" />
+          <Property Name="teacher_id" Type="Int64" Nullable="false" />
+          <Property Name="subject_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="has_midterm" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Class" Relationship="Self.FK_Subject_Class" FromRole="Subject" ToRole="Class" />
+          <NavigationProperty Name="Resources" Relationship="Self.FK_Resources_Subject" FromRole="Subject" ToRole="Resources" />
+          <NavigationProperty Name="Absences" Relationship="Self.FK_Absence_Subject" FromRole="Subject" ToRole="Absence" />
+          <NavigationProperty Name="Grades" Relationship="Self.FK_Grade_Subject" FromRole="Subject" ToRole="Grade" />
+          <NavigationProperty Name="Teacher" Relationship="Self.FK_Subject_Teacher" FromRole="Subject" ToRole="Teacher" />
+        </EntityType>
+        <EntityType Name="Teacher">
+          <Key>
+            <PropertyRef Name="teacher_id" />
+          </Key>
+          <Property Name="teacher_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="account_id" Type="Int64" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Account" Relationship="Self.FK_Teacher_Account" FromRole="Teacher" ToRole="Account" />
+          <NavigationProperty Name="Classes" Relationship="Self.FK_Class_Head_Teacher" FromRole="Teacher" ToRole="Class" />
+          <NavigationProperty Name="Subjects" Relationship="Self.FK_Subject_Teacher" FromRole="Teacher" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Absence">
+          <Key>
+            <PropertyRef Name="subject_id" />
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="date" />
+            <PropertyRef Name="excused" />
+          </Key>
+          <Property Name="subject_id" Type="Int64" Nullable="false" />
+          <Property Name="student_id" Type="Int64" Nullable="false" />
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="excused" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Absence_Student" FromRole="Absence" ToRole="Student" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_Absence_Subject" FromRole="Absence" ToRole="Subject" />
+        </EntityType>
+        <EntityType Name="Grade">
+          <Key>
+            <PropertyRef Name="subject_id" />
+            <PropertyRef Name="student_id" />
+            <PropertyRef Name="score" />
+            <PropertyRef Name="midterm" />
+          </Key>
+          <Property Name="subject_id" Type="Int64" Nullable="false" />
+          <Property Name="student_id" Type="Int64" Nullable="false" />
+          <Property Name="score" Type="Int16" Nullable="false" />
+          <Property Name="midterm" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Student" Relationship="Self.FK_Grade_Student" FromRole="Grade" ToRole="Student" />
+          <NavigationProperty Name="Subject" Relationship="Self.FK_Grade_Subject" FromRole="Grade" ToRole="Subject" />
+        </EntityType>
+        <Association Name="FK_Account_Role">
+          <End Role="Role" Type="Self.Role" Multiplicity="1" />
+          <End Role="Account" Type="Self.Account" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="role_id" />
+            </Principal>
+            <Dependent Role="Account">
+              <PropertyRef Name="role_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teacher_Account">
+          <End Role="Account" Type="Self.Account" Multiplicity="1" />
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Account">
+              <PropertyRef Name="account_id" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="account_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Class_Head_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Class" Type="Self.Class" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="teacher_id" />
+            </Principal>
+            <Dependent Role="Class">
+              <PropertyRef Name="head_teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Student_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Student" Type="Self.Student" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="class_id" />
+            </Principal>
+            <Dependent Role="Student">
+              <PropertyRef Name="class_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="class_id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="class_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Resources_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Resources" Type="Self.Resource" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="subject_id" />
+            </Principal>
+            <Dependent Role="Resources">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Absence_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Absence" Type="Self.Absence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="Absence">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Student">
+          <End Role="Student" Type="Self.Student" Multiplicity="1" />
+          <End Role="Grade" Type="Self.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Student">
+              <PropertyRef Name="student_id" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="student_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Absence_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Absence" Type="Self.Absence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="subject_id" />
+            </Principal>
+            <Dependent Role="Absence">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Grade_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="1" />
+          <End Role="Grade" Type="Self.Grade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="subject_id" />
+            </Principal>
+            <Dependent Role="Grade">
+              <PropertyRef Name="subject_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subject_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="1" />
+          <End Role="Subject" Type="Self.Subject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="teacher_id" />
+            </Principal>
+            <Dependent Role="Subject">
+              <PropertyRef Name="teacher_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="SchoolEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Classes" EntityType="Self.Class" />
+          <EntitySet Name="Resources" EntityType="Self.Resource" />
+          <EntitySet Name="Roles" EntityType="Self.Role" />
+          <EntitySet Name="Students" EntityType="Self.Student" />
+          <EntitySet Name="Subjects" EntityType="Self.Subject" />
+          <EntitySet Name="Teachers" EntityType="Self.Teacher" />
+          <EntitySet Name="Absences" EntityType="Self.Absence" />
+          <EntitySet Name="Grades" EntityType="Self.Grade" />
+          <AssociationSet Name="FK_Account_Role" Association="Self.FK_Account_Role">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="Account" EntitySet="Accounts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Account" Association="Self.FK_Student_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teacher_Account" Association="Self.FK_Teacher_Account">
+            <End Role="Account" EntitySet="Accounts" />
+            <End Role="Teacher" EntitySet="Teachers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Class_Head_Teacher" Association="Self.FK_Class_Head_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="Class" EntitySet="Classes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Student" EntitySet="Students" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Class" Association="Self.FK_Subject_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="Subject" EntitySet="Subjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Resources_Subject" Association="Self.FK_Resources_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="Resources" EntitySet="Resources" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Absence_Student" Association="Self.FK_Absence_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Absence" EntitySet="Absences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Student" Association="Self.FK_Grade_Student">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="Grade" EntitySet="Grades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Absence_Subject" Association="Self.FK_Absence_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="Absence" EntitySet="Absences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Grade_Subject" Association="Self.FK_Grade_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="Grade" EntitySet="Grades" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subject_Teacher" Association="Self.FK_Subject_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="Subject" EntitySet="Subjects" />
+          </AssociationSet>
+          <FunctionImport Name="CreateAbsence">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+            <Parameter Name="excused" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="CreateClass">
+            <Parameter Name="head_teacher_id" Mode="In" Type="Int32" />
+            <Parameter Name="year" Mode="In" Type="Int32" />
+            <Parameter Name="division" Mode="In" Type="String" />
+            <Parameter Name="specialization" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="CreateGrade">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="score" Mode="In" Type="Decimal" />
+            <Parameter Name="midterm" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="CreateStudent">
+            <Parameter Name="account_name" Mode="In" Type="String" />
+            <Parameter Name="account_password" Mode="In" Type="String" />
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+            <Parameter Name="class_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="CreateSubject">
+            <Parameter Name="class_id" Mode="In" Type="Int32" />
+            <Parameter Name="teacher_id" Mode="In" Type="Int32" />
+            <Parameter Name="subject_name" Mode="In" Type="String" />
+            <Parameter Name="has_midterm" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="CreateTeacher">
+            <Parameter Name="account_name" Mode="In" Type="String" />
+            <Parameter Name="account_password" Mode="In" Type="String" />
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteAbsence">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteClass">
+            <Parameter Name="class_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteGrade">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="midterm" Mode="In" Type="Boolean" />
+            <Parameter Name="score" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteStudent">
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteSubject">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteTeacher">
+            <Parameter Name="teacher_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllAbsences" ReturnType="Collection(SchoolModel.GetAllAbsences_Result)" />
+          <FunctionImport Name="GetAllClasses" ReturnType="Collection(SchoolModel.GetAllClasses_Result)" />
+          <FunctionImport Name="GetAllGrades" ReturnType="Collection(SchoolModel.GetAllGrades_Result)" />
+          <FunctionImport Name="GetAllStudentAbsences" ReturnType="Collection(SchoolModel.GetAllStudentAbsences_Result)">
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllStudentGrades" ReturnType="Collection(SchoolModel.GetAllStudentGrades_Result)">
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllStudents" ReturnType="Collection(SchoolModel.GetAllStudents_Result)" />
+          <FunctionImport Name="GetAllSubjectGrades" ReturnType="Collection(SchoolModel.GetAllSubjectGrades_Result)">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAllSubjects" ReturnType="Collection(SchoolModel.GetAllSubjects_Result)" />
+          <FunctionImport Name="GetAllTeachers" ReturnType="Collection(SchoolModel.GetAllTeachers_Result)" />
+          <FunctionImport Name="GetAllTeacherSubjects" ReturnType="Collection(SchoolModel.GetAllTeacherSubjects_Result)">
+            <Parameter Name="teacher_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateAbsence">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+            <Parameter Name="excused" Mode="In" Type="Boolean" />
+            <Parameter Name="old_date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateClass">
+            <Parameter Name="class_id" Mode="In" Type="Int32" />
+            <Parameter Name="head_teacher_id" Mode="In" Type="Int32" />
+            <Parameter Name="year" Mode="In" Type="Int32" />
+            <Parameter Name="division" Mode="In" Type="String" />
+            <Parameter Name="specialization" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateGrade">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="score" Mode="In" Type="Decimal" />
+            <Parameter Name="midterm" Mode="In" Type="Boolean" />
+            <Parameter Name="old_score" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateStudent">
+            <Parameter Name="student_id" Mode="In" Type="Int32" />
+            <Parameter Name="account_name" Mode="In" Type="String" />
+            <Parameter Name="account_password" Mode="In" Type="String" />
+            <Parameter Name="role_id" Mode="In" Type="Int32" />
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+            <Parameter Name="class_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateSubject">
+            <Parameter Name="subject_id" Mode="In" Type="Int32" />
+            <Parameter Name="class_id" Mode="In" Type="Int32" />
+            <Parameter Name="teacher_id" Mode="In" Type="Int32" />
+            <Parameter Name="subject_name" Mode="In" Type="String" />
+            <Parameter Name="has_midterm" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateTeacher">
+            <Parameter Name="teacher_id" Mode="In" Type="Int32" />
+            <Parameter Name="account_name" Mode="In" Type="String" />
+            <Parameter Name="account_password" Mode="In" Type="String" />
+            <Parameter Name="role_id" Mode="In" Type="Int32" />
+            <Parameter Name="first_name" Mode="In" Type="String" />
+            <Parameter Name="last_name" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetAllAbsences_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="student_id" Nullable="false" />
+          <Property Type="DateTime" Name="date" Nullable="false" />
+          <Property Type="Boolean" Name="excused" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetAllClasses_Result">
+          <Property Type="Int64" Name="class_id" Nullable="false" />
+          <Property Type="Int64" Name="head_teacher_id" Nullable="false" />
+          <Property Type="Int16" Name="year" Nullable="false" />
+          <Property Type="String" Name="division" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="specialization" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetAllGrades_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="student_id" Nullable="false" />
+          <Property Type="Int16" Name="score" Nullable="false" />
+          <Property Type="Boolean" Name="midterm" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetAllStudentAbsences_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="student_id" Nullable="false" />
+          <Property Type="DateTime" Name="date" Nullable="false" />
+          <Property Type="Boolean" Name="excused" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetAllStudentGrades_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="student_id" Nullable="false" />
+          <Property Type="Int16" Name="score" Nullable="false" />
+          <Property Type="Boolean" Name="midterm" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetAllStudents_Result">
+          <Property Type="Int64" Name="student_id" Nullable="false" />
+          <Property Type="String" Name="first_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="last_name" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="class_id" Nullable="false" />
+          <Property Type="Int16" Name="year" Nullable="false" />
+          <Property Type="String" Name="division" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="specialization" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetAllSubjectGrades_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="student_id" Nullable="false" />
+          <Property Type="Int16" Name="score" Nullable="false" />
+          <Property Type="Boolean" Name="midterm" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetAllSubjects_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="class_id" Nullable="false" />
+          <Property Type="Int64" Name="teacher_id" Nullable="false" />
+          <Property Type="String" Name="subject_name" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="has_midterm" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetAllTeachers_Result">
+          <Property Type="Int64" Name="teacher_id" Nullable="false" />
+          <Property Type="String" Name="first_name" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="last_name" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetAllTeacherSubjects_Result">
+          <Property Type="Int64" Name="subject_id" Nullable="false" />
+          <Property Type="Int64" Name="class_id" Nullable="false" />
+          <Property Type="Int64" Name="teacher_id" Nullable="false" />
+          <Property Type="String" Name="subject_name" Nullable="false" MaxLength="50" />
+          <Property Type="Boolean" Name="has_midterm" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SchoolModelStoreContainer" CdmEntityContainer="SchoolEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="SchoolModel.Account">
+              <MappingFragment StoreEntitySet="Account">
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="account_name" ColumnName="account_name" />
+                <ScalarProperty Name="account_password" ColumnName="account_password" />
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Classes">
+            <EntityTypeMapping TypeName="SchoolModel.Class">
+              <MappingFragment StoreEntitySet="Class">
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="head_teacher_id" ColumnName="head_teacher_id" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="division" ColumnName="division" />
+                <ScalarProperty Name="specialization" ColumnName="specialization" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Resources">
+            <EntityTypeMapping TypeName="SchoolModel.Resource">
+              <MappingFragment StoreEntitySet="Resources">
+                <ScalarProperty Name="resource_id" ColumnName="resource_id" />
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="resource_name" ColumnName="resource_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="SchoolModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="role_id" ColumnName="role_id" />
+                <ScalarProperty Name="role_title" ColumnName="role_title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Students">
+            <EntityTypeMapping TypeName="SchoolModel.Student">
+              <MappingFragment StoreEntitySet="Student">
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subjects">
+            <EntityTypeMapping TypeName="SchoolModel.Subject">
+              <MappingFragment StoreEntitySet="Subject">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="subject_name" ColumnName="subject_name" />
+                <ScalarProperty Name="has_midterm" ColumnName="has_midterm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teachers">
+            <EntityTypeMapping TypeName="SchoolModel.Teacher">
+              <MappingFragment StoreEntitySet="Teacher">
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="account_id" ColumnName="account_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Absences">
+            <EntityTypeMapping TypeName="SchoolModel.Absence">
+              <MappingFragment StoreEntitySet="Absence">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="excused" ColumnName="excused" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Grades">
+            <EntityTypeMapping TypeName="SchoolModel.Grade">
+              <MappingFragment StoreEntitySet="Grade">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="midterm" ColumnName="midterm" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="CreateAbsence" FunctionName="SchoolModel.Store.CreateAbsence" />
+          <FunctionImportMapping FunctionImportName="CreateClass" FunctionName="SchoolModel.Store.CreateClass" />
+          <FunctionImportMapping FunctionImportName="CreateGrade" FunctionName="SchoolModel.Store.CreateGrade" />
+          <FunctionImportMapping FunctionImportName="CreateStudent" FunctionName="SchoolModel.Store.CreateStudent" />
+          <FunctionImportMapping FunctionImportName="CreateSubject" FunctionName="SchoolModel.Store.CreateSubject" />
+          <FunctionImportMapping FunctionImportName="CreateTeacher" FunctionName="SchoolModel.Store.CreateTeacher" />
+          <FunctionImportMapping FunctionImportName="DeleteAbsence" FunctionName="SchoolModel.Store.DeleteAbsence" />
+          <FunctionImportMapping FunctionImportName="DeleteClass" FunctionName="SchoolModel.Store.DeleteClass" />
+          <FunctionImportMapping FunctionImportName="DeleteGrade" FunctionName="SchoolModel.Store.DeleteGrade" />
+          <FunctionImportMapping FunctionImportName="DeleteStudent" FunctionName="SchoolModel.Store.DeleteStudent" />
+          <FunctionImportMapping FunctionImportName="DeleteSubject" FunctionName="SchoolModel.Store.DeleteSubject" />
+          <FunctionImportMapping FunctionImportName="DeleteTeacher" FunctionName="SchoolModel.Store.DeleteTeacher" />
+          <FunctionImportMapping FunctionImportName="GetAllAbsences" FunctionName="SchoolModel.Store.GetAllAbsences">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllAbsences_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="excused" ColumnName="excused" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllClasses" FunctionName="SchoolModel.Store.GetAllClasses">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllClasses_Result">
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="head_teacher_id" ColumnName="head_teacher_id" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="division" ColumnName="division" />
+                <ScalarProperty Name="specialization" ColumnName="specialization" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllGrades" FunctionName="SchoolModel.Store.GetAllGrades">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllGrades_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="midterm" ColumnName="midterm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllStudentAbsences" FunctionName="SchoolModel.Store.GetAllStudentAbsences">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllStudentAbsences_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="excused" ColumnName="excused" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllStudentGrades" FunctionName="SchoolModel.Store.GetAllStudentGrades">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllStudentGrades_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="midterm" ColumnName="midterm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllStudents" FunctionName="SchoolModel.Store.GetAllStudents">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllStudents_Result">
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="year" ColumnName="year" />
+                <ScalarProperty Name="division" ColumnName="division" />
+                <ScalarProperty Name="specialization" ColumnName="specialization" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllSubjectGrades" FunctionName="SchoolModel.Store.GetAllSubjectGrades">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllSubjectGrades_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="student_id" ColumnName="student_id" />
+                <ScalarProperty Name="score" ColumnName="score" />
+                <ScalarProperty Name="midterm" ColumnName="midterm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllSubjects" FunctionName="SchoolModel.Store.GetAllSubjects">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllSubjects_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="subject_name" ColumnName="subject_name" />
+                <ScalarProperty Name="has_midterm" ColumnName="has_midterm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllTeachers" FunctionName="SchoolModel.Store.GetAllTeachers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllTeachers_Result">
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetAllTeacherSubjects" FunctionName="SchoolModel.Store.GetAllTeacherSubjects">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SchoolModel.GetAllTeacherSubjects_Result">
+                <ScalarProperty Name="subject_id" ColumnName="subject_id" />
+                <ScalarProperty Name="class_id" ColumnName="class_id" />
+                <ScalarProperty Name="teacher_id" ColumnName="teacher_id" />
+                <ScalarProperty Name="subject_name" ColumnName="subject_name" />
+                <ScalarProperty Name="has_midterm" ColumnName="has_midterm" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="UpdateAbsence" FunctionName="SchoolModel.Store.UpdateAbsence" />
+          <FunctionImportMapping FunctionImportName="UpdateClass" FunctionName="SchoolModel.Store.UpdateClass" />
+          <FunctionImportMapping FunctionImportName="UpdateGrade" FunctionName="SchoolModel.Store.UpdateGrade" />
+          <FunctionImportMapping FunctionImportName="UpdateStudent" FunctionName="SchoolModel.Store.UpdateStudent" />
+          <FunctionImportMapping FunctionImportName="UpdateSubject" FunctionName="SchoolModel.Store.UpdateSubject" />
+          <FunctionImportMapping FunctionImportName="UpdateTeacher" FunctionName="SchoolModel.Store.UpdateTeacher" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

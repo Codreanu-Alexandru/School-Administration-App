@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="Tema_3_MVP.Views.AccountsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Tema_3_MVP.Views"
+             xmlns:viewmodels="clr-namespace:Tema_3_MVP.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:AccountsViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White" DataContext="{Binding}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
+            <Button Content="Back" Margin="5" Width="75" Click="Button_Click"/>
+            <Button Content="Create" Margin="5" Width="75" Click="Create_Click"/>
+            <Button Content="Edit" Margin="5" Width="75" Click="Edit_Click"/>
+            <Button Content="Delete" Margin="5" Width="75" Click="Delete_Click"/>
+        </StackPanel>
+        <ListView ItemsSource="{Binding Accounts}" Margin="5px" BorderBrush="Gray" Grid.Row="1" Grid.Column="0" SelectedIndex="{Binding Index}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Id"
+                                    DisplayMemberBinding="{Binding account_id}" Width="100"/>
+                    <GridViewColumn Header="Username" 
+                                    DisplayMemberBinding="{Binding account_name}" Width="200"/>
+                    <GridViewColumn Header="Password" 
+                                    DisplayMemberBinding="{Binding account_password}" Width="200"/>
+                    <GridViewColumn Header="Role"
+                                    DisplayMemberBinding="{Binding role_id}" Width="150"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</UserControl>
